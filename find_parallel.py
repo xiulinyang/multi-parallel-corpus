@@ -110,7 +110,7 @@ def create_parallel_corpus(overlap_en, file_paths):
         assert len(en) == len(lan)
         new_en = []
         new_lan =[]
-        for i, sent in enumerate(en):
+        for i, sent in tqdm(enumerate(en)):
             if sent in overlap_en:
                 new_en.append(sent)
                 new_lan.append(lan[i])
