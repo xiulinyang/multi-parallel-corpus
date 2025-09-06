@@ -101,7 +101,7 @@ def create_parallel_corpus(overlap_en, file_paths):
     :param file_paths:
     :return:
     '''
-    overlap_en = list(overlap_en)
+    overlap_en_list = list(overlap_en)
     for lang in tqdm(file_paths):
         parallel_en =[]
         parallel_lang = []
@@ -115,7 +115,7 @@ def create_parallel_corpus(overlap_en, file_paths):
                 new_en.append(sent)
                 new_lan.append(lan[i])
         en_lan = create_dic(new_en, new_lan)
-        for en_sent in overlap_en:
+        for en_sent in overlap_en_list:
             parallel_en.append(en_sent)
             parallel_lang.append(en_lan[en_sent])
         en_words = sum([len(x.split()) for x in parallel_en])
