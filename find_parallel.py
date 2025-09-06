@@ -13,14 +13,14 @@ target_dir = args.target_dir
 
 
 lang_paths = {
-#'ar': {
-#        'en': f'{source_dir}/ar_en.txt',
-#        'ar': f'{source_dir}/ar.txt'
-#   },
-#    'de': {
-#        'en': f'{source_dir}/de_en.txt',
-#        'de': f'{source_dir}/de.txt'
-#    },
+'ar': {
+       'en': f'{source_dir}/ar_en.txt',
+       'ar': f'{source_dir}/ar.txt'
+  },
+   'de': {
+       'en': f'{source_dir}/de_en.txt',
+       'de': f'{source_dir}/de.txt'
+   },
     'ru': {
         'en': f'{source_dir}/ru_en.txt',
         'ru': f'{source_dir}/ru.txt'
@@ -28,27 +28,21 @@ lang_paths = {
     'zh': {
         'en': f'{source_dir}/zh_en.txt',
         'zh': f'{source_dir}/zh.txt'
-    }
-#    'fr': {
-#        'en': f'{source_dir}/fr_en.txt',
-#        'fr': f'{source_dir}/fr.txt'
-#    },
-    # 'nl': {
-    #     'en': f'{source_dir}/nl_en.txt',
-    #     'nl': f'{source_dir}/nl.txt'
-    # },
-#    'tr': {
-#        'en': f'{source_dir}/tr_en.txt',
-#        'tr': f'{source_dir}/tr.txt'
-#    },
-    # 'it': {
-    #     'en': f'{source_dir}/it_en.txt',
-    #     'it': f'{source_dir}/it.txt'
-    # },
-#    'pl': {
-#        'en': f'{source_dir}/pl_en.txt',
-#        'pl': f'{source_dir}/pl.txt'
-#    }
+    },
+   'fr': {
+       'en': f'{source_dir}/fr_en.txt',
+       'fr': f'{source_dir}/fr.txt'
+   },
+
+   'tr': {
+       'en': f'{source_dir}/tr_en.txt',
+       'tr': f'{source_dir}/tr.txt'
+   },
+
+   'pl': {
+       'en': f'{source_dir}/pl_en.txt',
+       'pl': f'{source_dir}/pl.txt'
+   }
 }
 
 print(lang_paths)
@@ -107,7 +101,7 @@ def create_parallel_corpus(overlap_en, file_paths):
     :param file_paths:
     :return:
     '''
-    overlap_en = list(set(overlap_en))
+    overlap_en = list(overlap_en)
     for lang in tqdm(file_paths):
         parallel_en =[]
         parallel_lang = []
