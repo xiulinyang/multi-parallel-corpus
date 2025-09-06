@@ -122,7 +122,11 @@ def create_parallel_corpus(overlap_en, file_paths):
         for en_sent in overlap_en:
             parallel_en.append(en_sent)
             parallel_lang.append(en_lan[en_sent])
-        print(lang, len(parallel_en), len(parallel_lang))
+        en_words = sum([len(x.split()) for x in parallel_en])
+        lang_words = sum([len(x.split()) for x in parallel_lang])
+        print(lang, len(parallel_en), len(parallel_lang), en_words, lang_words)
+        with open('parallel_stats.tsv', 'a') as p_s:
+            p_s.write(f'{source_dir}\t{lang}\t{en_words}\t{lang_words}\t{len(parallel_lang)}\t{len(parallel_en)}\n')
         write_lines(f'{target_dir}/{lang}.txt', parallel_lang)
         write_lines(f'{target_dir}/{lang}_en.txt', parallel_en)
 
