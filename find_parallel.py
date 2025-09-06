@@ -13,6 +13,10 @@ target_dir = args.target_dir
 
 
 lang_paths = {
+'ar': {
+        'en': f'{source_dir}/ar_en.txt',
+        'ar': f'{source_dir}/ar.txt'
+    },
     'de': {
         'en': f'{source_dir}/de_en.txt',
         'de': f'{source_dir}/de.txt'
@@ -29,26 +33,18 @@ lang_paths = {
         'en': f'{source_dir}/fr_en.txt',
         'fr': f'{source_dir}/fr.txt'
     },
-    'nl': {
-        'en': f'{source_dir}/nl_en.txt',
-        'nl': f'{source_dir}/nl.txt'
-    },
+    # 'nl': {
+    #     'en': f'{source_dir}/nl_en.txt',
+    #     'nl': f'{source_dir}/nl.txt'
+    # },
     'tr': {
         'en': f'{source_dir}/tr_en.txt',
         'tr': f'{source_dir}/tr.txt'
     },
-    'es': {
-        'en': f'{source_dir}/es_en.txt',
-        'es': f'{source_dir}/es.txt'
-    },
-    'ar': {
-        'en': f'{source_dir}/ar_en.txt',
-        'ar': f'{source_dir}/ar.txt'
-    },
-    'it': {
-        'en': f'{source_dir}/it_en.txt',
-        'it': f'{source_dir}/it.txt'
-    },
+    # 'it': {
+    #     'en': f'{source_dir}/it_en.txt',
+    #     'it': f'{source_dir}/it.txt'
+    # },
     'pl': {
         'en': f'{source_dir}/pl_en.txt',
         'pl': f'{source_dir}/pl.txt'
@@ -60,17 +56,15 @@ def ensure_directories(path):
 
 ensure_directories(f'{target_dir}')
 
-test  = Path(f'{target_dir}/de_en.txt').read_text().strip().split('\n')
-
 def find_overlap(file_paths):
     '''
     :param file_paths: the paths where the English-centered parallel corpora are located.
     :return: the overlap English sentences across all English-centered parallel corpora.
     '''
 
-    initial_lang = set(read_lines(file_paths['de']['en']))
+    initial_lang = set(read_lines(file_paths['zh']['en']))
     for lang in tqdm(file_paths):
-        if lang =='de':
+        if lang =='zh':
             continue
 
         lang_en = read_lines(file_paths[lang]['en'])
@@ -112,6 +106,7 @@ def create_parallel_corpus(overlap_en, file_paths):
     :param file_paths:
     :return:
     '''
+    overlap_en = set(overlap_en)
     for lang in tqdm(file_paths):
         parallel_en =[]
         parallel_lang = []
@@ -120,15 +115,14 @@ def create_parallel_corpus(overlap_en, file_paths):
         new_en = []
         new_lan =[]
         for i, sent in tqdm(enumerate(en)):
-            if sent not in test:
+            if sent in overlap_en:
                 new_en.append(sent)
                 new_lan.append(lan[i])
         en_lan = create_dic(new_en, new_lan)
         for en_sent in overlap_en:
-            if en_sent in tqdm(en_lan):
-                parallel_en.append(en_sent)
-                parallel_lang.append(en_lan[en_sent])
-        print(len(parallel_en), len(parallel_lang))
+            parallel_en.append(en_sent)
+            parallel_lang.append(en_lan[en_sent])
+        print(lang, len(parallel_en), len(parallel_lang))
         write_lines(f'{target_dir}/{lang}.txt', parallel_lang)
         write_lines(f'{target_dir}/{lang}_en.txt', parallel_en)
 
