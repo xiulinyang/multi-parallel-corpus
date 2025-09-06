@@ -112,6 +112,7 @@ def create_parallel_corpus(overlap_en, file_paths):
         parallel_lang = []
         en = read_lines(file_paths[lang]['en'])
         lan = read_lines(file_paths[lang][lang])
+        assert len(en) == len(lan)
         new_en = []
         new_lan =[]
         for i, sent in tqdm(enumerate(en)):
