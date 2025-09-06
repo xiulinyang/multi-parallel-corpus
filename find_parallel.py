@@ -106,7 +106,7 @@ def create_parallel_corpus(overlap_en, file_paths):
     :param file_paths:
     :return:
     '''
-    overlap_en = set(overlap_en)
+    overlap_en = list(set(overlap_en))
     for lang in tqdm(file_paths):
         parallel_en =[]
         parallel_lang = []
