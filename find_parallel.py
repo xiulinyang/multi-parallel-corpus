@@ -91,6 +91,7 @@ def write_lines(file_path, lines):
     '''
     with open(file_path, 'w') as f:
         for line in lines:
+            line = line.strip()
             f.write(f'{line}\n')
 
 
