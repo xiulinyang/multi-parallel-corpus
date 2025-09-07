@@ -11,8 +11,8 @@ for lang in langs:
         en_file = Path(d) / f"{lang}_en.txt"
         la_file = Path(d) / f"{lang}.txt"
 
-        en_lines = en_file.read_text().splitlines()
-        la_lines = la_file.read_text().splitlines()
+        en_lines = en_file.read_text().strip().split('\n')
+        la_lines = la_file.read_text().strip().split('\n')
 
         if len(en_lines) != len(la_lines):
             raise ValueError(f"Line mismatch in {d} for {lang}: {len(en_lines)} vs {len(la_lines)}")
