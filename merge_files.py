@@ -10,8 +10,7 @@ def read_lines(file_path):
     :param file_path: the path of each document
     :return: sentence for each line in the file
     '''
-
-    return [x.strip() for x in Path(file_path).read_text().split('\n')]
+    return [x.strip() for x in Path(file_path).read_text().strip().split('\n')]
 
 
 

@@ -119,12 +119,20 @@ def create_parallel_corpus(overlap_en, file_paths):
         new_lan =[]
         for i, sent in tqdm(enumerate(en)):
             if sent in overlap_en:
+                if len(sent.strip().split())<3:
+                    continue
+                if not len(lan[i].strip()):
+                    continue
+
                 new_en.append(sent)
                 new_lan.append(lan[i])
         en_lan = create_dic(new_en, new_lan)
         for en_sent in overlap_en_list:
+            target_sent = en_lan.get(en_sent)
+            if target_sent is None:
+                continue
             parallel_en.append(en_sent)
-            parallel_lang.append(en_lan[en_sent])
+            parallel_lang.append(target_sent)
         en_words = sum([len(x.split()) for x in parallel_en])
         lang_words = sum([len(x.split()) for x in parallel_lang])
         print(lang, len(parallel_en), len(parallel_lang), en_words, lang_words)
