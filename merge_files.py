@@ -6,13 +6,21 @@ langs = ['ar','de', 'fr', 'zh', 'pl', 'ru', 'tr']
 Path("merged").mkdir(exist_ok=True)
 
 for lang in langs:
-    with open(f'merged/{lang}_en.txt', 'w') as en, open(f'merged/{lang}.txt', 'w') as la:
-        merged_en = [Path(f'{x}/{lang}_en.txt').read_text().strip() for x in parallel_dirs]
-        merged_lang = [Path(f'{x}/{lang}.txt').read_text().strip() for x in parallel_dirs]
-        merged_en_check = [len(x.split('\n')) for x in merged_en]
-        merged_lang_check = [len(x.split('\n')) for x in merged_lang]
-        print(merged_en_check, merged_lang_check)
-        assert merged_en_check == merged_lang_check
-        en.write('\n'.join(merged_en))
-        la.write('\n'.join(merged_lang))
+    merged_en, merged_lang = [], []
+    for d in parallel_dirs:
+        en_file = Path(d) / f"{lang}_en.txt"
+        la_file = Path(d) / f"{lang}.txt"
+
+        en_lines = en_file.read_text().splitlines()
+        la_lines = la_file.read_text().splitlines()
+
+        if len(en_lines) != len(la_lines):
+            raise ValueError(f"Line mismatch in {d} for {lang}: {len(en_lines)} vs {len(la_lines)}")
+
+        merged_en.extend(en_lines)
+        merged_lang.extend(la_lines)
+
+    Path(f"merged/{lang}_en.txt").write_text("\n".join(merged_en))
+    Path(f"merged/{lang}.txt").write_text("\n".join(merged_lang))
+    print(f"{lang}: merged {len(merged_en)} lines")
 
