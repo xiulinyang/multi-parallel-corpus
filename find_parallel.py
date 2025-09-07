@@ -121,8 +121,8 @@ def create_parallel_corpus(overlap_en, file_paths):
             if sent in overlap_en:
                 if len(sent.strip().split())<3:
                     continue
-                if not len(lan[i].strip()):
-                    continue
+                # if not len(lan[i].strip()):
+                #     continue
 
                 new_en.append(sent)
                 new_lan.append(lan[i])
