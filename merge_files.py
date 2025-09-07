@@ -5,14 +5,24 @@ parallel_dirs = sorted(glob('*_parallel/'))
 langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr','ar']
 Path("merged").mkdir(exist_ok=True)
 
+def read_lines(file_path):
+    '''
+    :param file_path: the path of each document
+    :return: sentence for each line in the file
+    '''
+
+    return [x.strip() for x in Path(file_path).read_text().strip().split('\n')]
+
+
+
 for lang in langs:
     merged_en, merged_lang = [], []
     for d in parallel_dirs:
-        en_file = Path(d) / f"{lang}_en.txt"
-        la_file = Path(d) / f"{lang}.txt"
+        en_file =  f"{d}/{lang}_en.txt"
+        la_file =  f"{d}/{lang}.txt"
 
-        en_lines = en_file.read_text().strip().split('\n')
-        la_lines = la_file.read_text().strip().split('\n')
+        en_lines = read_lines(en_file)
+        la_lines = read_lines(la_file)
 
         if len(en_lines) != len(la_lines):
             raise ValueError(f"Line mismatch in {d} for {lang}: {len(en_lines)} vs {len(la_lines)}")
