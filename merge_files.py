@@ -2,7 +2,7 @@ from glob import glob
 from pathlib import Path
 parallel_dirs = sorted(glob('*_parallel/'))
 
-langs = ['ar','de', 'fr', 'zh', 'pl', 'ru', 'tr']
+langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr','ar']
 Path("merged").mkdir(exist_ok=True)
 
 for lang in langs:
