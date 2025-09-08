@@ -54,7 +54,7 @@ def main():
         cmd = [
             "opus_get",
             "-s", "en",
-            "-t", 'it',
+            "-t", LANG,
             "-d", corpus,
             "-p", "moses",
             "-dl", tdir,
