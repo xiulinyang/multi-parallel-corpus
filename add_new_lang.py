@@ -62,6 +62,7 @@ def main():
         ]
 
         subprocess.run(cmd, check=True)
+        subprocess.run("yes | unzip '*.zip' -o", shell=True, cwd=tdir)
         src_en = f"{tdir}/{corpus}.en-{LANG}.en"
         dst_en = f"{tdir}/{LANG}_en.txt"
 
