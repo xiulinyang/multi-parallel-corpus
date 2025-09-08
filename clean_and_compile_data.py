@@ -10,6 +10,7 @@ from pathlib import Path
 import unicodedata
 import re
 import csv
+from tqdm import tqdm
 model_path = hf_hub_download(repo_id="facebook/fasttext-language-identification", filename="model.bin")
 model = fasttext.load_model(model_path)
 
@@ -148,7 +149,7 @@ def build_en_source_dict(lang, multilingual_parallel_dirs):
 def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, out_dir='cleaned_parallel'):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    for lang in languages:
+    for lang in tqdm(languages):
         meta = build_en_source_dict(lang, multilingual_parallel_dirs)
         out_path = Path(f'{out_dir}/en_{lang}.tsv')
         with out_path.open("w", encoding="utf-8", newline="") as f:
