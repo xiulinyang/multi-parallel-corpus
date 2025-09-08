@@ -5,20 +5,20 @@ from tqdm import tqdm
 LANG='ja'
 LANG_NUM=9
 EN_ALIGN = 'en8.txt'
-corpora = {'OpenSubtitles': 'opensubs',
-           'LinguaTools-WikiTitles': 'wiki',
-           'NeuLab-TedTalks': 'neulab_ted',
-           'TED2020': 'ted2020',
+corpora = {'OpenSubtitles': ['opensubs', LANG],
+           'LinguaTools-WikiTitles': ['wiki', LANG],
+           'NeuLab-TedTalks': ['neulab_ted', LANG],
+           'TED2020': ['ted2020', LANG],
            # 'TED2013': 'ted2013',
-           'Tanzil': 'tanzil',
-           'Tatoeba': 'tatoeba',
-           'GNOME': 'gnome',
-           'QED': 'qed',
-           'Ubuntu': 'ubuntu',
-           'bible-uedin': 'bible',
-           'KDE4': 'kde4',
-           'GlobalVoices': 'gv',
-           'tldr-pages': 'tldr'
+           'Tanzil': ['tanzil', LANG],
+           'Tatoeba': ['tatoeba', LANG],
+           'GNOME': ['gnome', LANG],
+           'QED': ['qed', LANG],
+           'Ubuntu': ['ubuntu', LANG],
+           'KDE4': ['kde4', LANG],
+           'GlobalVoices': ['gv', LANG],
+           'tldr-pages': ['tldr', LANG],
+            'bible-uedin': ['bible','jap']
            }
 
 def read_lines(file_path):
@@ -55,20 +55,20 @@ def main():
         cmd = [
             "opus_get",
             "-s", "en",
-            "-t", LANG,
+            "-t", tdir[1],
             "-d", corpus,
             "-p", "moses",
-            "-dl", tdir,
+            "-dl", tdir[0],
             "-r", 'latest',
         ]
 
         subprocess.run(cmd, check=True)
         subprocess.run("yes | unzip '*.zip'", shell=True, cwd=tdir)
         subprocess.run("rm -f *.zip", shell=True, cwd=tdir)
-        src_en = f"{tdir}/{corpus}.en-{LANG}.en"
+        src_en = f"{tdir}/{corpus}.en-{tdir[1]}.en"
         dst_en = f"{tdir}/{LANG}_en.txt"
 
-        src_lang = f"{tdir}/{corpus}.en-{LANG}.{LANG}"
+        src_lang = f"{tdir}/{corpus}.en-{tdir[1]}.{tdir[1]}"
         dst_lang = f"{tdir}/{LANG}.txt"
         os.rename(src_en, dst_en)
         os.rename(src_lang, dst_lang)
