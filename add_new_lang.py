@@ -2,22 +2,22 @@ import subprocess
 import os
 from pathlib import Path
 from tqdm import tqdm
-LANG='fi'
-LANG_NUM=11
-EN_ALIGN = 'en10.txt'
+LANG='th'
+LANG_NUM=12
+EN_ALIGN = 'en11.txt'
 corpora = {'OpenSubtitles': ['opensubs', LANG],
-           'LinguaTools-WikiTitles': ['wiki', LANG],
+           # 'LinguaTools-WikiTitles': ['wiki', LANG],
            'NeuLab-TedTalks': ['neulab_ted', LANG],
            'TED2020': ['ted2020', LANG],
            # 'TED2013': 'ted2013',
-           # 'Tanzil': ['tanzil', LANG],
+           'Tanzil': ['tanzil', LANG],
            'Tatoeba': ['tatoeba', LANG],
            'GNOME': ['gnome', LANG],
            'QED': ['qed', LANG],
            'Ubuntu': ['ubuntu', LANG],
            'KDE4': ['kde4', LANG],
            # 'GlobalVoices': ['gv', LANG],
-           # 'tldr-pages': ['tldr', LANG],
+           'tldr-pages': ['tldr', LANG],
             'bible-uedin': ['bible',LANG]
            }
 
