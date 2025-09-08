@@ -79,7 +79,7 @@ def clean_en(
     with open(illegal_log_name, "a", encoding="utf-8") as illegal_log:
         kept = []
 
-        for lang in languages:
+        for lang in tqdm(languages):
             en_path = Path(merged_dir) / f"{lang}_en.txt"
             lg_path = Path(merged_dir) / f"{lang}.txt"
 
@@ -90,7 +90,7 @@ def clean_en(
             labels, _ = model.predict(lg_text)
             expected = EXPECTED_SCRIPT.get(lang, "LATIN")
 
-            for en_sent, lg_sent, lbl in zip(en_text, lg_text, labels):
+            for en_sent, lg_sent, lbl in tqdm(zip(en_text, lg_text, labels)):
                 en_s = en_sent.strip()
                 lg_s = lg_sent.strip()
                 if len(lg_s) <= min_tgt_len:
