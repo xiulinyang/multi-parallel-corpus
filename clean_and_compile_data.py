@@ -80,7 +80,7 @@ def clean_en(
         kept = []
 
         for lang in languages:
-            en_path = Path(merged_dir) / f"en_{lang}.txt"
+            en_path = Path(merged_dir) / f"{lang}_en.txt"
             lg_path = Path(merged_dir) / f"{lang}.txt"
 
             en_text = en_path.read_text(encoding="utf-8").strip().split("\n")
@@ -133,7 +133,7 @@ def clean_en(
 def build_en_source_dict(lang, multilingual_parallel_dirs):
     lang_source_dict = {}
     for m_dir in multilingual_parallel_dirs:
-        en_data = Path(f'{m_dir}/en_{lang}.txt').read_text().strip().split('\n')
+        en_data = Path(f'{m_dir}/{lang}_en.txt').read_text().strip().split('\n')
         m_data = Path(f'{m_dir}/{lang}.txt').read_text().strip().split('\n')
         assert len(en_data) == len(m_data)
         source_name = m_dir.split('_')[0]
