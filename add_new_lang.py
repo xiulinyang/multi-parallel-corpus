@@ -5,6 +5,21 @@ from tqdm import tqdm
 LANG='ja'
 LANG_NUM=9
 EN_ALIGN = 'en8.txt'
+corpora = {'OpenSubtitles': 'opensubs',
+           'LinguaTools-WikiTitles': 'wiki',
+           'NeuLab-TedTalks': 'neulab_ted',
+           'Ted2020': 'ted2020',
+           # 'Ted2013': 'ted2013',
+           'Tanzil': 'tanzil',
+           'Tatoeba': 'tatoeba',
+           'GNOME': 'gnome',
+           'QED': 'qed',
+           'Ubuntu': 'ubuntu',
+           'bible-uedin': 'bible',
+           'KDE4': 'kde4',
+           'GlobalVoices': 'gv',
+           'tldr-pages': 'tldr'
+           }
 
 def read_lines(file_path):
     '''
@@ -34,21 +49,7 @@ def find_overlap(corpora, lang, en_p):
     return initial_lang
 
 def main():
-    corpora = {'OpenSubtitles': 'opensubs',
-               'LinguaTools-WikiTitles': 'wiki',
-               'NeuLab-TedTalks': 'neulab_ted',
-               'Ted2020': 'ted2020',
-               # 'Ted2013': 'ted2013',
-               'Tanzil': 'tanzil',
-               'Tatoeba': 'tatoeba',
-               'GNOME': 'gnome',
-               'QED': 'qed',
-               'Ubuntu': 'ubuntu',
-               'bible-uedin': 'bible',
-               'KDE4': 'kde4',
-               'GlobalVoices': 'gv',
-               'tldr-pages': 'tldr'
-               }
+
 
     for corpus, tdir in corpora.items():
         cmd = [
@@ -62,7 +63,7 @@ def main():
         ]
 
         subprocess.run(cmd, check=True)
-        subprocess.run("yes | unzip '*.zip' -o", shell=True, cwd=tdir)
+        subprocess.run("yes | unzip '*.zip'", shell=True, cwd=tdir)
         subprocess.run("rm -f *.zip", shell=True, cwd=tdir)
         src_en = f"{tdir}/{corpus}.en-{LANG}.en"
         dst_en = f"{tdir}/{LANG}_en.txt"
