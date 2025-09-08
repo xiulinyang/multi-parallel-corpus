@@ -37,9 +37,11 @@ def find_overlap(corpora, lang, en_p):
     :return: the overlap English sentences across all English-centered parallel corpora.
     '''
     initial_lang = set(read_lines(en_p))
+    print(len(initial_lang))
     for k, v in corpora.items():
         file_path = f'{v[0]}/{lang}_en.txt'
         lang_en = read_lines(file_path)
+        print(len(lang_en))
         initial_lang &= set(lang_en)
     print(len(initial_lang))
     initial_lang = [x.strip() for x in initial_lang]
