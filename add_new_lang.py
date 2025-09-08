@@ -2,22 +2,22 @@ import subprocess
 import os
 from pathlib import Path
 from tqdm import tqdm
-LANG='it'
-LANG_NUM=10
-EN_ALIGN = 'en9.txt'
+LANG='fo'
+LANG_NUM=11
+EN_ALIGN = 'en10.txt'
 corpora = {'OpenSubtitles': ['opensubs', LANG],
            'LinguaTools-WikiTitles': ['wiki', LANG],
            'NeuLab-TedTalks': ['neulab_ted', LANG],
            'TED2020': ['ted2020', LANG],
            # 'TED2013': 'ted2013',
-           'Tanzil': ['tanzil', LANG],
+           # 'Tanzil': ['tanzil', LANG],
            'Tatoeba': ['tatoeba', LANG],
            'GNOME': ['gnome', LANG],
            'QED': ['qed', LANG],
            'Ubuntu': ['ubuntu', LANG],
            'KDE4': ['kde4', LANG],
-           'GlobalVoices': ['gv', LANG],
-           'tldr-pages': ['tldr', LANG],
+           # 'GlobalVoices': ['gv', LANG],
+           # 'tldr-pages': ['tldr', LANG],
             'bible-uedin': ['bible',LANG]
            }
 
@@ -56,27 +56,27 @@ def find_overlap(corpora, lang, en_p):
 def main():
 
 
-    # for corpus, tdir in corpora.items():
-    #     cmd = [
-    #         "opus_get",
-    #         "-s", "en",
-    #         "-t", tdir[1],
-    #         "-d", corpus,
-    #         "-p", "moses",
-    #         "-dl", tdir[0],
-    #         "-r", 'latest',
-    #     ]
-    #
-    #     subprocess.run(cmd, check=True)
-    #     subprocess.run("yes | unzip '*.zip'", shell=True, cwd=tdir[0])
-    #     subprocess.run("rm -f *.zip", shell=True, cwd=tdir[0])
-    #     src_en = f"{tdir[0]}/{corpus}.en-{tdir[1]}.en"
-    #     dst_en = f"{tdir[0]}/{LANG}_en.txt"
-    #
-    #     src_lang = f"{tdir[0]}/{corpus}.en-{tdir[1]}.{tdir[1]}"
-    #     dst_lang = f"{tdir[0]}/{LANG}.txt"
-    #     os.rename(src_en, dst_en)
-    #     os.rename(src_lang, dst_lang)
+    for corpus, tdir in corpora.items():
+        cmd = [
+            "opus_get",
+            "-s", "en",
+            "-t", tdir[1],
+            "-d", corpus,
+            "-p", "moses",
+            "-dl", tdir[0],
+            "-r", 'latest',
+        ]
+
+        subprocess.run(cmd, check=True)
+        subprocess.run("yes | unzip '*.zip'", shell=True, cwd=tdir[0])
+        subprocess.run("rm -f *.zip", shell=True, cwd=tdir[0])
+        src_en = f"{tdir[0]}/{corpus}.en-{tdir[1]}.en"
+        dst_en = f"{tdir[0]}/{LANG}_en.txt"
+
+        src_lang = f"{tdir[0]}/{corpus}.en-{tdir[1]}.{tdir[1]}"
+        dst_lang = f"{tdir[0]}/{LANG}.txt"
+        os.rename(src_en, dst_en)
+        os.rename(src_lang, dst_lang)
 
     find_overlap(corpora, LANG, EN_ALIGN)
 
