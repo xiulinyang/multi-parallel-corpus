@@ -2,7 +2,7 @@ import subprocess
 import os
 from pathlib import Path
 from tqdm import tqdm
-LANG='fo'
+LANG='fi'
 LANG_NUM=11
 EN_ALIGN = 'en10.txt'
 corpora = {'OpenSubtitles': ['opensubs', LANG],
