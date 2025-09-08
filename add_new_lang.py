@@ -16,7 +16,7 @@ corpora = {'OpenSubtitles': ['opensubs', LANG],
            'QED': ['qed', LANG],
            'Ubuntu': ['ubuntu', LANG],
            'KDE4': ['kde4', LANG],
-           'GlobalVoices': ['gv', LANG],
+           'GlobalVoices': ['gv', 'jp'],
            'tldr-pages': ['tldr', LANG],
             'bible-uedin': ['bible','jap']
            }
