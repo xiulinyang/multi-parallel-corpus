@@ -55,7 +55,7 @@ def main():
             "opus_get",
             "-s", "en",
             "-t", 'it',
-            "-d", corpora,
+            "-d", corpus,
             "-p", "moses",
             "-dl", tdir,
             "-r", 'latest',
