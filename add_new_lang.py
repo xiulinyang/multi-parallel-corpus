@@ -38,7 +38,7 @@ def find_overlap(corpora, lang, en_p):
     '''
     initial_lang = read_lines(en_p)
     for k, v in corpora.items():
-        file_path = f'{v}/{lang}_en.txt'
+        file_path = f'{v[0]}/{lang}_en.txt'
         lang_en = read_lines(file_path)
         initial_lang &= set(lang_en)
     print(len(initial_lang))
@@ -63,13 +63,13 @@ def main():
         ]
 
         subprocess.run(cmd, check=True)
-        subprocess.run("yes | unzip '*.zip'", shell=True, cwd=tdir)
-        subprocess.run("rm -f *.zip", shell=True, cwd=tdir)
-        src_en = f"{tdir}/{corpus}.en-{tdir[1]}.en"
-        dst_en = f"{tdir}/{LANG}_en.txt"
+        subprocess.run("yes | unzip '*.zip'", shell=True, cwd=tdir[0])
+        subprocess.run("rm -f *.zip", shell=True, cwd=tdir[0])
+        src_en = f"{tdir[0]}/{corpus}.en-{tdir[1]}.en"
+        dst_en = f"{tdir[0]}/{LANG}_en.txt"
 
-        src_lang = f"{tdir}/{corpus}.en-{tdir[1]}.{tdir[1]}"
-        dst_lang = f"{tdir}/{LANG}.txt"
+        src_lang = f"{tdir[0]}/{corpus}.en-{tdir[1]}.{tdir[1]}"
+        dst_lang = f"{tdir[0]}/{LANG}.txt"
         os.rename(src_en, dst_en)
         os.rename(src_lang, dst_lang)
 
