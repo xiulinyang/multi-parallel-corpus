@@ -1,3 +1,8 @@
+'''
+This script is used to build multilingual parallel corpora.
+So far, the script supports 8 languages, and it is easy to add more.
+'''
+
 import os
 from pathlib import Path
 from tqdm import tqdm
@@ -42,7 +47,18 @@ lang_paths = {
    'pl': {
        'en': f'{source_dir}/pl_en.txt',
        'pl': f'{source_dir}/pl.txt'
-   }
+   },
+
+    'fi': {
+        'en': f'{source_dir}/fi_en.txt',
+        'fi': f'{source_dir}/fi.txt'
+    },
+
+    'ko': {
+        'en': f'{source_dir}/ko_en.txt',
+        'ko': f'{source_dir}/ko.txt'
+    },
+
 }
 
 print(lang_paths)
@@ -61,9 +77,12 @@ def find_overlap(file_paths):
     for lang in tqdm(file_paths):
         if lang =='zh':
             continue
-
-        lang_en = read_lines(file_paths[lang]['en'])
-        initial_lang &= set(lang_en)
+        try:
+            lang_en = read_lines(file_paths[lang]['en'])
+            initial_lang &= set(lang_en)
+        except FileNotFoundError as e:
+            print(e)
+            continue
 
     print(len(initial_lang))
     return initial_lang
@@ -76,12 +95,6 @@ def read_lines(file_path):
     '''
 
     return [x.strip() for x in Path(file_path).read_text().strip().split('\n')]
-
-#
-# def read_lines(file_path):
-#     text = Path(file_path).read_text(encoding="utf-8", errors="replace")
-#     text = text.replace("\r\n", "\n").replace("\r", "\n")
-#     return text.splitlines()
 
 def write_lines(file_path, lines):
     '''
