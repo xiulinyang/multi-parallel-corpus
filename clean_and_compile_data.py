@@ -73,12 +73,10 @@ def clean_en(
     languages,
     illegal_log_name = 'filtered_out_data.tsv',
     merged_dir="merged_parallel",
-    len_ratio_min=0.2,
-    len_ratio_max=4.0,
     min_tgt_len=3,
     max_punct_digit_ratio=0.5,
     min_script_ratio=0.5,
-    ngram_overlap=3
+    ngram_overlap=2
 ):
     with open(illegal_log_name, "a", encoding="utf-8") as illegal_log:
         removed = []
@@ -103,13 +101,6 @@ def clean_en(
                 if lbl[0].startswith("__label__en"):
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttext is English.\t{lbl[0]}\n')
                     removed.append(en_sent)
-
-                # length ratio in terms of characters
-                lr = len(lg_s) / max(1, len(en_s))
-                if lr < len_ratio_min or lr > len_ratio_max:
-                    illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\tseems the length ratio is not ok.\t{lr}\n')
-                    removed.append(en_sent)
-
                 # percentage of punctuations
                 pr = _punct_digit_ratio(lg_s)
                 if pr > max_punct_digit_ratio:
