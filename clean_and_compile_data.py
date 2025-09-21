@@ -81,8 +81,7 @@ def clean_en(
     ngram_overlap=3
 ):
     with open(illegal_log_name, "a", encoding="utf-8") as illegal_log:
-        en_zh_path = Path(merged_dir) / f"zh_en.txt"
-        en_list = en_zh_path.read_text(encoding="utf-8").strip().split("\n")
+        removed = []
 
         for lang in tqdm(languages):
             en_path = Path(merged_dir) / f"{lang}_en.txt"
@@ -100,54 +99,36 @@ def clean_en(
                 lg_s = lg_sent.strip()
                 if len(lg_s) <= min_tgt_len:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttext too short.\t{len(lg_s)}\n')
-                    if en_sent in set(en_list):
-                        en_list.remove(en_sent)
-                    else:
-                        continue
+                    removed.append(en_sent)
                 if lbl[0].startswith("__label__en"):
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttext is English.\t{lbl[0]}\n')
-                    if en_sent in set(en_list):
-                        en_list.remove(en_sent)
-                    else:
-                        continue
+                    removed.append(en_sent)
 
                 # length ratio in terms of characters
                 lr = len(lg_s) / max(1, len(en_s))
                 if lr < len_ratio_min or lr > len_ratio_max:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\tseems the length ratio is not ok.\t{lr}\n')
-                    if en_sent in set(en_list):
-                        en_list.remove(en_sent)
-                    else:
-                        continue
+                    removed.append(en_sent)
 
                 # percentage of punctuations
                 pr = _punct_digit_ratio(lg_s)
                 if pr > max_punct_digit_ratio:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo many punctuataion.\t{pr}\n')
-                    if en_sent in set(en_list):
-                        en_list.remove(en_sent)
-                    else:
-                        continue
+                    removed.append(en_sent)
                 # percentage of letters for non latin languages.
                 if expected != "LATIN":
                     if _script_ratio(lg_s, expected) < min_script_ratio:
                         illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo many letters.\t_\n')
-                        if en_sent in set(en_list):
-                            en_list.remove(en_sent)
-                        else:
-                            continue
+                        removed.append(en_sent)
 
                 # overlap with english
                 if ngram_jaccard(en_s, lg_s) < ngram_overlap:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
-                    if en_sent in set(en_list):
-                        en_list.remove(en_sent)
-                    else:
-                        continue
+                    removed.append(en_sent)
 
 
     #deduplicate
-    return list(dict.fromkeys(en_list))
+    return set(removed)
 
 
 def build_en_source_dict(lang, multilingual_parallel_dirs):
@@ -188,5 +169,9 @@ if __name__ =='__main__':
     parallel_dirs = sorted(glob('*_parallel/'))
     parallel_dirs = [x for x in parallel_dirs if 'merge' not in x]
     langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
-    en_list = clean_en(langs)
+    removed_en_list = clean_en(langs)
+    en_zh_path = Path("merged_parallel/zh_en.txt")
+    en_text_all = en_zh_path.read_text(encoding="utf-8").strip().split("\n")
+    en_list = [x for x in en_text_all if x not in removed_en_list]
+    print(len(en_list))
     build_lang_pair(en_list, langs, parallel_dirs)
