@@ -7,9 +7,8 @@ import fasttext
 from huggingface_hub import hf_hub_download
 from glob import glob
 from pathlib import Path
-import unicodedata
-import re
 import csv
+import re, unicodedata
 from tqdm import tqdm
 model_path = hf_hub_download(repo_id="facebook/fasttext-language-identification", filename="model.bin")
 model = fasttext.load_model(model_path)
@@ -20,6 +19,7 @@ EXPECTED_SCRIPT = {
     "zh": "HAN",
     "ar": "ARABIC",
     "ru": "CYRILLIC",
+    "ko": "HANGUL"
 }
 
 def _script_name(ch: str) -> str:
@@ -29,7 +29,7 @@ def _script_name(ch: str) -> str:
         return "OTHER"
     if "CJK UNIFIED IDEOGRAPH" in name:
         return "HAN"
-    for tag in ("LATIN", "ARABIC", "CYRILLIC"):
+    for tag in ("LATIN", "ARABIC", "CYRILLIC", "HANGUL"):
         if tag in name:
             return tag
     return "OTHER"
@@ -54,27 +54,33 @@ def _punct_digit_ratio(text: str) -> float:
     bad = sum(ch.isdigit() or unicodedata.category(ch).startswith('P') for ch in text)
     return bad / max(1, len(text))
 
-def _token_jaccard(a: str, b: str) -> float:
-    tok = lambda s: set(re.findall(r"[A-Za-z0-9\p{L}\p{N}]+", s, flags=re.UNICODE))
-    try:
-        A, B = tok(a.lower()), tok(b.lower())
-    except re.error:
-        A = set(re.findall(r"\w+", a.lower()))
-        B = set(re.findall(r"\w+", b.lower()))
-    if not A and not B:
+_WORD = re.compile(r"[^\W_]+", flags=re.UNICODE)  # unicode word chars, no underscore
+
+def _tok(s: str):
+    s = unicodedata.normalize("NFKC", s).casefold()
+    return _WORD.findall(s)
+
+def ngram_jaccard(a: str, b: str, n: int = 1):
+    A, B = _tok(a), _tok(b)
+    if len(A) < n and len(B) < n:
+        return 1.0  # both too short → trivially identical
+    def ngrams(seq, n):
+        return {" ".join(seq[i:i+n]) for i in range(len(seq)-n+1)}
+    NA, NB = ngrams(A, n), ngrams(B, n)
+    if not NA and not NB:
         return 1.0
-    return len(A & B) / max(1, len(A | B))
+    return len(NA & NB) / max(1, len(A))
 
 def clean_en(
     languages,
     illegal_log_name = 'filtered_out_data.tsv',
-    merged_dir="merge_parallel",
+    merged_dir="merged_parallel",
     len_ratio_min=0.5,
     len_ratio_max=3.0,
     min_tgt_len=3,
     max_punct_digit_ratio=0.5,
     min_script_ratio=0.5,
-    max_en_overlap=0.7
+    max_en_overlap=0.8
 ):
     with open(illegal_log_name, "a", encoding="utf-8") as illegal_log:
         kept = []
@@ -120,7 +126,7 @@ def clean_en(
                         continue
 
                 # overlap with english
-                if _token_jaccard(en_s, lg_s) > max_en_overlap:
+                if ngram_jaccard(en_s, lg_s) > max_en_overlap:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
                     continue
 
@@ -166,6 +172,6 @@ def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, out_dir
 
 if __name__ =='__main__':
     parallel_dirs = sorted(glob('*_parallel/'))
-    langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar']
+    langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
     en_list = clean_en(langs)
     build_lang_pair(en_list, langs, parallel_dirs)
