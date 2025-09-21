@@ -63,24 +63,24 @@ def _tok(s: str):
 def ngram_jaccard(a: str, b: str, n: int = 1):
     A, B = _tok(a), _tok(b)
     if len(A) < n and len(B) < n:
-        return 1.0  # both too short → trivially identical
+        return len(A)
     def ngrams(seq, n):
         return {" ".join(seq[i:i+n]) for i in range(len(seq)-n+1)}
     NA, NB = ngrams(A, n), ngrams(B, n)
     if not NA and not NB:
-        return 1.0
-    return len(NA & NB) / max(1, len(A))
+        return len(A)
+    return len(A)-len(NA & NB)
 
 def clean_en(
     languages,
     illegal_log_name = 'filtered_out_data.tsv',
     merged_dir="merged_parallel",
-    len_ratio_min=0.5,
-    len_ratio_max=3.0,
+    len_ratio_min=0.2,
+    len_ratio_max=4.0,
     min_tgt_len=3,
     max_punct_digit_ratio=0.5,
     min_script_ratio=0.5,
-    max_en_overlap=0.8
+    ngram_overlap=3
 ):
     with open(illegal_log_name, "a", encoding="utf-8") as illegal_log:
         kept = []
@@ -126,7 +126,7 @@ def clean_en(
                         continue
 
                 # overlap with english
-                if ngram_jaccard(en_s, lg_s) > max_en_overlap:
+                if ngram_jaccard(en_s, lg_s) < ngram_overlap:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
                     continue
 
