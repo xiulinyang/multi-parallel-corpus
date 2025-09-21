@@ -172,7 +172,7 @@ def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, out_dir
 
 if __name__ =='__main__':
     parallel_dirs = sorted(glob('*_parallel/'))
-    parallel_dirs = [x in parallel_dirs for x in parallel_dirs if 'merge' not in x]
+    parallel_dirs = [x for x in parallel_dirs if 'merge' not in x]
     langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
     en_list = clean_en(langs)
     build_lang_pair(en_list, langs, parallel_dirs)
