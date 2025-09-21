@@ -106,17 +106,23 @@ def clean_en(
                 if pr > max_punct_digit_ratio:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo many punctuataion.\t{pr}\n')
                     removed.append(en_sent)
+
+                # overlap with english
+                if ngram_jaccard(en_s, lg_s) < ngram_overlap:
+                    illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
+                    if lang =='zh': #special treatments of chinese
+                        new_text = lg_sent.split()[0]
+                        if ngram_jaccard(en_s, new_text) < ngram_overlap:
+                            removed.append(en_sent)
+                        else:
+                            continue
+                    else:
+                        removed.append(en_sent)
                 # percentage of letters for non latin languages.
                 if expected != "LATIN":
                     if _script_ratio(lg_s, expected) < min_script_ratio:
                         illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo many letters.\t_\n')
                         removed.append(en_sent)
-
-                # overlap with english
-                if ngram_jaccard(en_s, lg_s) < ngram_overlap:
-                    illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
-                    removed.append(en_sent)
-
 
     #deduplicate
     return set(removed)
