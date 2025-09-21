@@ -2,7 +2,7 @@ from glob import glob
 from pathlib import Path
 parallel_dirs = sorted(glob('*_parallel/'))
 
-langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr','ar']
+langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr','ar', 'fi', 'ko']
 Path("merged").mkdir(exist_ok=True)
 
 def read_lines(file_path):
