@@ -114,13 +114,10 @@ def clean_en(
                 if ngram_jaccard(en_s, lg_s) < ngram_overlap:
                     if lang =='zh': #special treatments of chinese
                         new_text = lg_sent.split()[0]
-                        print(new_text)
                         if ngram_jaccard(en_s, new_text) < ngram_overlap or _script_ratio(new_text, expected) < min_script_ratio or len(new_text)<4:
                             illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
                             removed.append(en_sent)
                         else:
-                            print('====')
-                            print(new_text)
                             continue
                     else:
                         illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
@@ -172,8 +169,7 @@ def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, out_dir
 if __name__ =='__main__':
     parallel_dirs = sorted(glob('*_parallel/'))
     parallel_dirs = [x for x in parallel_dirs if 'merge' not in x]
-    # langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
-    langs = ['zh']
+    langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
     removed_en_list = clean_en(langs)
     en_zh_path = Path("merged_parallel/zh_en.txt")
     en_text_all = en_zh_path.read_text(encoding="utf-8").strip().split("\n")
