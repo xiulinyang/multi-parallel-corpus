@@ -78,7 +78,7 @@ def clean_en(
     min_script_ratio=0.5,
     ngram_overlap=2
 ):
-    with open(illegal_log_name, "a", encoding="utf-8") as illegal_log:
+    with (open(illegal_log_name, "a", encoding="utf-8") as illegal_log):
         removed = []
 
         for lang in tqdm(languages):
@@ -112,18 +112,19 @@ def clean_en(
 
                 # overlap with english
                 if ngram_jaccard(en_s, lg_s) < ngram_overlap:
-                    illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
-                    # if lang =='zh': #special treatments of chinese
-                    #     new_text = lg_sent.split()[0]
-                    #     print(new_text)
-                    #     if ngram_jaccard(en_s, new_text) < ngram_overlap:
-                    #         removed.append(en_sent)
-                    #     else:
-                    #         print('====')
-                    #         print(new_text)
-                    #         continue
-                    # else:
-                    removed.append(en_sent)
+                    if lang =='zh': #special treatments of chinese
+                        new_text = lg_sent.split()[0]
+                        print(new_text)
+                        if ngram_jaccard(en_s, new_text) < ngram_overlap or _script_ratio(new_text, expected) < min_script_ratio or len(new_text)<4:
+                            illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
+                            removed.append(en_sent)
+                        else:
+                            print('====')
+                            print(new_text)
+                            continue
+                    else:
+                        illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
+                        removed.append(en_sent)
                 # percentage of letters for non latin languages.
                 if expected != "LATIN":
                     if _script_ratio(lg_s, expected) < min_script_ratio:
