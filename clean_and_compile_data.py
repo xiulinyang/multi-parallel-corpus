@@ -99,7 +99,7 @@ def clean_en(
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttext too short.\t{len(lg_s)}\n')
                     removed.append(en_sent)
                 if lbl[0].startswith("__label__en"):
-                    if lang=='zh':
+                    if lang=='zh' and len(lg_sent)>2:
                         if _script_name(lg_sent[-2]) =='HAN':
                             continue
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttext is English.\t{lbl[0]}\n')
