@@ -80,7 +80,7 @@ def clean_en(
 ):
     with (open(illegal_log_name, "a", encoding="utf-8") as illegal_log):
         removed = []
-
+        chinese_pair = {}
         for lang in tqdm(languages):
             en_path = Path(merged_dir) / f"{lang}_en.txt"
             lg_path = Path(merged_dir) / f"{lang}.txt"
@@ -98,9 +98,27 @@ def clean_en(
                 if len(lg_s) <= min_tgt_len:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttext too short.\t{len(lg_s)}\n')
                     removed.append(en_sent)
+
+                # overlap with english
+                if ngram_jaccard(en_s, lg_s) < ngram_overlap:
+                    if lang =='zh': #special treatments of chinese
+                        letter_id = [_script_name(c) for c in lg_s].index('LATIN')
+                        punc_id = lg_s.index('{')
+                        new_text = lg_sent[:min(letter_id, punc_id)]
+                        if ngram_jaccard(en_s, new_text) < ngram_overlap or _script_ratio(new_text, expected) < min_script_ratio or len(new_text)<4:
+                            illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
+                            removed.append(en_sent)
+                        else:
+                            chinese_pair[en_sent] = new_text.strip()
+                            continue
+                    else:
+                        illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
+                        removed.append(en_sent)
+
                 if lbl[0].startswith("__label__en"):
                     if lang=='zh' and len(lg_sent)>2:
                         if _script_name(lg_sent[-2]) =='HAN':
+                            chinese_pair[en_sent] = lg_sent.strip()
                             continue
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttext is English.\t{lbl[0]}\n')
                     removed.append(en_sent)
@@ -110,18 +128,7 @@ def clean_en(
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo many punctuataion.\t{pr}\n')
                     removed.append(en_sent)
 
-                # overlap with english
-                if ngram_jaccard(en_s, lg_s) < ngram_overlap:
-                    if lang =='zh': #special treatments of chinese
-                        new_text = lg_sent.split()[0]
-                        if ngram_jaccard(en_s, new_text) < ngram_overlap or _script_ratio(new_text, expected) < min_script_ratio or len(new_text)<4:
-                            illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
-                            removed.append(en_sent)
-                        else:
-                            continue
-                    else:
-                        illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
-                        removed.append(en_sent)
+
                 # percentage of letters for non latin languages.
                 if expected != "LATIN":
                     if _script_ratio(lg_s, expected) < min_script_ratio:
@@ -129,10 +136,10 @@ def clean_en(
                         removed.append(en_sent)
 
     #deduplicate
-    return set(removed)
+    return set(removed), chinese_pair
 
 
-def build_en_source_dict(lang, multilingual_parallel_dirs):
+def build_en_source_dict(lang, multilingual_parallel_dirs, chinese_pair):
     lang_source_dict = {}
     for m_dir in multilingual_parallel_dirs:
         en_data = Path(f'{m_dir}/{lang}_en.txt').read_text().strip().split('\n')
@@ -140,6 +147,9 @@ def build_en_source_dict(lang, multilingual_parallel_dirs):
         assert len(en_data) == len(m_data)
         source_name = m_dir.split('_')[0]
         for sent_en, sent_l in zip(en_data, m_data):
+            if lang=='zh':
+                if sent_en in chinese_pair:
+                    sent_l = chinese_pair[sent_en]
             if sent_en not in lang_source_dict:
                 lang_source_dict[sent_en] = {'source':[source_name],
                                           'trans': [sent_l]}
@@ -170,7 +180,7 @@ if __name__ =='__main__':
     parallel_dirs = sorted(glob('*_parallel/'))
     parallel_dirs = [x for x in parallel_dirs if 'merge' not in x]
     langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
-    removed_en_list = clean_en(langs)
+    removed_en_list, chinese_pairs = clean_en(langs)
     en_zh_path = Path("merged_parallel/zh_en.txt")
     en_text_all = en_zh_path.read_text(encoding="utf-8").strip().split("\n")
     en_list = [x for x in en_text_all if x not in removed_en_list]
