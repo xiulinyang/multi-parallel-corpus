@@ -22,42 +22,42 @@ lang_paths = {
        'en': f'{source_dir}/ar_en.txt',
        'ar': f'{source_dir}/ar.txt'
   },
-   'de': {
-       'en': f'{source_dir}/de_en.txt',
-       'de': f'{source_dir}/de.txt'
-   },
-    'ru': {
-        'en': f'{source_dir}/ru_en.txt',
-        'ru': f'{source_dir}/ru.txt'
-    },
+   # 'de': {
+   #     'en': f'{source_dir}/de_en.txt',
+   #     'de': f'{source_dir}/de.txt'
+   # },
+   #  'ru': {
+   #      'en': f'{source_dir}/ru_en.txt',
+   #      'ru': f'{source_dir}/ru.txt'
+   #  },
     'zh': {
         'en': f'{source_dir}/zh_en.txt',
         'zh': f'{source_dir}/zh.txt'
     },
-   'fr': {
-       'en': f'{source_dir}/fr_en.txt',
-       'fr': f'{source_dir}/fr.txt'
-   },
-
-   'tr': {
-       'en': f'{source_dir}/tr_en.txt',
-       'tr': f'{source_dir}/tr.txt'
-   },
-
-   'pl': {
-       'en': f'{source_dir}/pl_en.txt',
-       'pl': f'{source_dir}/pl.txt'
-   },
-
-    'fi': {
-        'en': f'{source_dir}/fi_en.txt',
-        'fi': f'{source_dir}/fi.txt'
-    },
-
-    'ko': {
-        'en': f'{source_dir}/ko_en.txt',
-        'ko': f'{source_dir}/ko.txt'
-    },
+   # 'fr': {
+   #     'en': f'{source_dir}/fr_en.txt',
+   #     'fr': f'{source_dir}/fr.txt'
+   # },
+   #
+   # 'tr': {
+   #     'en': f'{source_dir}/tr_en.txt',
+   #     'tr': f'{source_dir}/tr.txt'
+   # },
+   #
+   # 'pl': {
+   #     'en': f'{source_dir}/pl_en.txt',
+   #     'pl': f'{source_dir}/pl.txt'
+   # },
+   #
+   #  'fi': {
+   #      'en': f'{source_dir}/fi_en.txt',
+   #      'fi': f'{source_dir}/fi.txt'
+   #  },
+   #
+   #  'ko': {
+   #      'en': f'{source_dir}/ko_en.txt',
+   #      'ko': f'{source_dir}/ko.txt'
+   #  },
 
 }
 
