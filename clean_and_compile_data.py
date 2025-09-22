@@ -165,11 +165,11 @@ def build_en_source_dict(lang, multilingual_parallel_dirs, chinese_pair):
                 lang_source_dict[sent_en]['trans'].append(sent_l)
     return lang_source_dict
 
-def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, out_dir='cleaned_parallel'):
+def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, chinese_pair, out_dir='cleaned_parallel'):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     for lang in tqdm(languages):
-        meta = build_en_source_dict(lang, multilingual_parallel_dirs)
+        meta = build_en_source_dict(lang, multilingual_parallel_dirs, chinese_pair)
         out_path = Path(f'{out_dir}/en_{lang}.tsv')
         with out_path.open("w", encoding="utf-8", newline="") as f:
             writer = csv.writer(f, delimiter="\t")
@@ -193,4 +193,4 @@ if __name__ =='__main__':
     en_list = [x for x in en_text_all if x not in removed_en_list]
     print(len(en_list))
     print(sum([len(x.split()) for x in en_list]))
-    build_lang_pair(en_list, langs, parallel_dirs)
+    build_lang_pair(en_list, langs, parallel_dirs, chinese_pairs)
