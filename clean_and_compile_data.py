@@ -185,7 +185,7 @@ def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, chinese
 
 if __name__ =='__main__':
     parallel_dirs = sorted(glob('*_parallel/'))
-    parallel_dirs = [x for x in parallel_dirs if 'merge' not in x]
+    parallel_dirs = [x for x in parallel_dirs if 'merge' not in x and 'clean' not in x]
     langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
     removed_en_list, chinese_pairs = clean_en(langs)
     en_zh_path = Path("merged_parallel/zh_en.txt")
