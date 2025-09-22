@@ -110,17 +110,17 @@ def clean_en(
                 # overlap with english
                 if ngram_jaccard(en_s, lg_s) < ngram_overlap:
                     illegal_log.write(f'{lang}\t{en_sent}\t{lg_sent}\ttoo much overlap.\t_\n')
-                    if lang =='zh': #special treatments of chinese
-                        new_text = lg_sent.split()[0]
-                        print(new_text)
-                        if ngram_jaccard(en_s, new_text) < ngram_overlap:
-                            removed.append(en_sent)
-                        else:
-                            print('====')
-                            print(new_text)
-                            continue
-                    else:
-                        removed.append(en_sent)
+                    # if lang =='zh': #special treatments of chinese
+                    #     new_text = lg_sent.split()[0]
+                    #     print(new_text)
+                    #     if ngram_jaccard(en_s, new_text) < ngram_overlap:
+                    #         removed.append(en_sent)
+                    #     else:
+                    #         print('====')
+                    #         print(new_text)
+                    #         continue
+                    # else:
+                    removed.append(en_sent)
                 # percentage of letters for non latin languages.
                 if expected != "LATIN":
                     if _script_ratio(lg_s, expected) < min_script_ratio:
