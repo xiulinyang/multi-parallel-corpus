@@ -187,7 +187,7 @@ if __name__ =='__main__':
     parallel_dirs = sorted(glob('*3/'))
     parallel_dirs = [x for x in parallel_dirs if 'merge' not in x and 'clean' not in x]
     # langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
-    langs = ['en', 'ar', 'zh']
+    langs = ['ar', 'zh']
     removed_en_list, chinese_pairs = clean_en(langs)
     en_zh_path = Path("merged_3/zh_en.txt")
     en_text_all = en_zh_path.read_text(encoding="utf-8").strip().split("\n")

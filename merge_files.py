@@ -3,7 +3,7 @@ from pathlib import Path
 parallel_dirs = sorted(glob('*3/'))
 
 # langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr','ar', 'fi', 'ko']
-langs = ['zh', 'ar', 'en']
+langs = ['zh', 'ar']
 Path("merged_3langs").mkdir(exist_ok=True)
 
 def read_lines(file_path):
