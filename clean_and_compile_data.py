@@ -72,7 +72,7 @@ def ngram_jaccard(a: str, b: str, n: int = 1):
 def clean_en(
     languages,
     illegal_log_name = 'filtered_out_data3.tsv',
-    merged_dir="merged_3",
+    merged_dir="merged3",
     min_tgt_len=3,
     max_punct_digit_ratio=0.5,
     min_script_ratio=0.5,
