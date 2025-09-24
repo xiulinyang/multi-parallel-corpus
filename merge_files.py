@@ -4,7 +4,7 @@ parallel_dirs = sorted(glob('*3/'))
 
 # langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr','ar', 'fi', 'ko']
 langs = ['zh', 'ar', 'en']
-Path("merged").mkdir(exist_ok=True)
+Path("merged_3langs").mkdir(exist_ok=True)
 
 def read_lines(file_path):
     '''
@@ -30,7 +30,7 @@ for lang in langs:
         merged_en.extend(en_lines)
         merged_lang.extend(la_lines)
 
-    Path(f"merged_3/{lang}_en.txt").write_text("\n".join(merged_en))
-    Path(f"merged_3/{lang}.txt").write_text("\n".join(merged_lang))
+    Path(f"merged_3langs/{lang}_en.txt").write_text("\n".join(merged_en))
+    Path(f"merged_3langs/{lang}.txt").write_text("\n".join(merged_lang))
     print(f"{lang}: merged {len(merged_en)} lines")
 
