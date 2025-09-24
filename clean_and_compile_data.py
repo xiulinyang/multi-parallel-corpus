@@ -71,8 +71,8 @@ def ngram_jaccard(a: str, b: str, n: int = 1):
 
 def clean_en(
     languages,
-    illegal_log_name = 'filtered_out_data.tsv',
-    merged_dir="merged_parallel",
+    illegal_log_name = 'filtered_out_data3.tsv',
+    merged_dir="merged_3",
     min_tgt_len=3,
     max_punct_digit_ratio=0.5,
     min_script_ratio=0.5,
@@ -165,7 +165,7 @@ def build_en_source_dict(lang, multilingual_parallel_dirs, chinese_pair):
                 lang_source_dict[sent_en]['trans'].append(sent_l)
     return lang_source_dict
 
-def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, chinese_pair, out_dir='cleaned_parallel'):
+def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, chinese_pair, out_dir='cleaned_3'):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     for lang in tqdm(languages):
@@ -184,11 +184,12 @@ def build_lang_pair(en_text_list, languages, multilingual_parallel_dirs, chinese
 
 
 if __name__ =='__main__':
-    parallel_dirs = sorted(glob('*_parallel/'))
+    parallel_dirs = sorted(glob('*3/'))
     parallel_dirs = [x for x in parallel_dirs if 'merge' not in x and 'clean' not in x]
-    langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
+    # langs = ['de', 'fr', 'zh', 'pl', 'ru', 'tr', 'ar','fi', 'ko']
+    langs = ['en', 'ar', 'zh']
     removed_en_list, chinese_pairs = clean_en(langs)
-    en_zh_path = Path("merged_parallel/zh_en.txt")
+    en_zh_path = Path("merged_3/zh_en.txt")
     en_text_all = en_zh_path.read_text(encoding="utf-8").strip().split("\n")
     en_list = [x for x in en_text_all if x not in removed_en_list]
     print(len(en_list))
