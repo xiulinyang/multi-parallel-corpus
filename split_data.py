@@ -3,7 +3,7 @@ from pathlib import Path
 from random import sample, shuffle
 from tqdm import tqdm
 import random
-random.seed(42)
+random.seed(41)
 langs = ['zh', 'tr', 'ar', 'de', 'fi', 'ko','fr','pl','ru' ]
 data_split = 'parallel10'
 # langs = ['zh', 'ar']
