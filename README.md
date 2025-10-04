@@ -1,5 +1,7 @@
 # multi-parallel-corpus
-The repository for building multilingual parallel corpus.
+
+This repository is built for building multilingual parallel corpus.
+
 ## Step 1: Download the datasets in the moses format and rename the files.
 Moses format refers to one source language txt file and one target language file which each line being the translation of the other.
 ```bash
@@ -26,3 +28,8 @@ python further_clean.py
 python find_parallel.py -s source_dir -t target_dir
 ```
 
+## Optional: stats analysis and/or experiment with adding new languages
+
+- If you want to check the source distribution of the parallel corpus you build, check out ```stats.py```.
+- If you want to experiment with adding more languages and just want to check how big the corpus would be, check out ```add_new_lang.py```. 
+The overlap is computed between the existing English corpus and the English side of the new bilingual corpus. This overlap ratio reflects how much of the new dataset is already contained in the existing data. Since no cleaning has been done yet, the final overlap after cleaning may be somewhat smaller depending on data quality.
