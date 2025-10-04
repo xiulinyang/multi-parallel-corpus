@@ -42,7 +42,7 @@ os.makedirs(en_train_path, exist_ok=True)
 os.makedirs(en_dev_path, exist_ok=True)
 os.makedirs(en_test_path, exist_ok=True)
 os.makedirs(en_train100_path, exist_ok=True)
-with open(f'{data_split}/EN/train/EN.txt', 'w') as en_t, open(f'{data_split}/EN/dev/EN.txt', 'w') as en_d, open(f'{data_split}/EN/test/EN.txt', 'w') as en_e,open(f'{en_train100_path}/EN/train/EN.txt', 'w') as en_t100:
+with open(f'{data_split}/EN/train/EN.txt', 'w') as en_t, open(f'{data_split}/EN/dev/EN.txt', 'w') as en_d, open(f'{data_split}/EN/test/EN.txt', 'w') as en_e,open(f'{en_train100_path}/EN.txt', 'w') as en_t100:
     t_en ='\n'.join(train)
     d_en ='\n'.join(dev)
     tes_en ='\n'.join(test)
