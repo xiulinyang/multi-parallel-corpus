@@ -1,6 +1,9 @@
 from pathlib import Path
 from collections import Counter
 from tqdm import tqdm
+
+import pandas as pd
+from collections import defaultdict
 import matplotlib.pyplot as plt
 plt.style.use("seaborn-v0_8")
 langs = ['zh', 'ko', 'ar','de','pl','ru','tr','ar_en','fi','fr']
@@ -42,4 +45,16 @@ plt.xlim(0, max_len)
 plt.tight_layout()
 plt.savefig('distribution.pdf')
 plt.show()
+
+
+en_data = pd.read_csv('en_ar.tsv', sep='\t').to_dict(orient ='records')
+sources = defaultdict(int)
+sources_overlap = defaultdict(int)
+for data in en_data:
+    source = data['source'].split('&')[0]
+    sources[source]+=len(data['en'].split())
+    sources_overlap[source]+=1
+
+print(sources)
+print(sources_overlap)
 
