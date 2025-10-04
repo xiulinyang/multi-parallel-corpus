@@ -84,7 +84,7 @@ for lang in tqdm(langs):
     print(len(train_lang), len(dev_lang), len(test_lang))
 
 
-    with open(f'{train_path}/{lang_name}.txt', 'w') as f_train, open(f'{train_path}/{lang_name}.txt', 'w') as f_dev, open(f'{train_path}/{lang_name}.txt', 'w') as f_test:
+    with open(f'{train_path}/{lang_name}.txt', 'w',encoding="utf-8") as f_train, open(f'{dev_path}/{lang_name}.txt','w',encoding="utf-8") as f_dev, open(f'{test_path}/{lang_name}.txt', 'w',encoding="utf-8") as f_test:
         train_text = '\n'.join(train_lang)
         dev_text = '\n'.join(dev_lang)
         test_text = '\n'.join(test_lang)
