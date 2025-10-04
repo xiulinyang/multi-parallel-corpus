@@ -1,6 +1,7 @@
 import opencc
 import pandas as pd
 import re
+import html
 from tqdm import tqdm
 def clean_text(text):
     invisible_chars = [
@@ -27,11 +28,12 @@ langs = ['zh', 'ar']
 for lang in tqdm(langs):
     t_lang = []
     en_lang = []
-    tgt_lang = pd.read_csv(f'cleaned_3/en_{lang}.tsv', sep='\t').to_dict(orient='records')
-    with (open(f'multilingual_data/{lang}.txt', 'w') as f,
-          open(f'multilingual_data/{lang}_en.txt', 'w') as e):
+    tgt_lang = pd.read_csv(f'cleaned_3/en_{lang}.tsv',encoding="utf-8", sep='\t').to_dict(orient='records')
+    with (open(f'multilingual_data/{lang}.txt', 'w',encoding="utf-8") as f,
+          open(f'multilingual_data/{lang}_en.txt', 'w',encoding="utf-8") as e):
         for tgt_text in tgt_lang:
             trans = tgt_text['trans']
+            trans =html.unescape(trans)
             if lang == 'zh':
                 trans = converter.convert(trans)
                 if tgt_text['source'] == 'bible':  # bible text add space between characters so we will remove the space
