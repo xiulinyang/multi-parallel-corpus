@@ -11,7 +11,8 @@ en = Path(f'{parall_data_path}/ar_en.txt').read_text().strip().split('\n')
 
 shuffle(en)
 test = sample(en, 40000)
-dev = sample(en, 10000)
+remain = list(set(en) - set(test))
+dev = sample(remain, 10000)
 blocked = set(test) | set(dev)
 train = [x for x in en if x not in blocked]
 
@@ -26,7 +27,7 @@ for sent in train:
     train100.append(sent)
     total_words += n_words
 
-print(f"Selected {len(train):,} sentences, {total_words/1_000_000:.1f}M words")
+print(f"Selected {len(train100):,} sentences, {total_words/1_000_000:.1f}M words")
 
 # langs = ['zh', 'tr', 'ar', 'de', 'fi', 'ko','fr','pl','ru' ]
 # data_split = 'parallel10'
@@ -51,10 +52,11 @@ with open(f'{data_split}/EN/train/EN.txt', 'w') as en_t, open(f'{data_split}/EN/
     en_d.write(d_en)
     en_e.write(tes_en)
     en_t100.write(en_100)
-    train_len = sum([len(x.split()) for x in train])
-    dev_len = sum([len(x.split()) for x in dev])
-    test_len = sum([len(x.split()) for x in test])
-    train_100_len = sum([len(x.split()) for x in train100])
+    train_len = sum(len(x.split()) for x in train)
+    dev_len = sum(len(x.split()) for x in dev)
+    test_len = sum(len(x.split()) for x in test)
+    train_100_len = sum(len(x.split()) for x in train100)
+
     print('EN')
     print(train_len, dev_len, test_len, train_100_len)
 
