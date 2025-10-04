@@ -34,7 +34,7 @@ for lang in tqdm(langs):
     assert len(pair_en) == len(pair_lang)
     en_lang_pair ={x:y for x, y in zip(pair_en, pair_lang)}
     lang_name = lang.upper()
-    train_path = f'{data_split}/{lang_name}/'
+    train_path = f'{data_split}/{lang_name}/train'
     dev_path = f'{data_split}/{lang_name}/dev'
     test_path = f'{data_split}/{lang_name}/test'
     os.makedirs(train_path, exist_ok=True)
@@ -49,7 +49,7 @@ for lang in tqdm(langs):
     print(len(train_lang), len(dev_lang), len(test_lang))
 
 
-    with open(f'{train_path}/{lang_name}.train', 'w') as f_train, open(f'{train_path}/{lang_name}.dev', 'w') as f_dev, open(f'{train_path}/{lang_name}.test', 'w') as f_test:
+    with open(f'{train_path}/{lang_name}.txt', 'w') as f_train, open(f'{train_path}/{lang_name}.txt', 'w') as f_dev, open(f'{train_path}/{lang_name}.txt', 'w') as f_test:
         train_text = '\n'.join(train_lang)
         dev_text = '\n'.join(dev_lang)
         test_text = '\n'.join(test_lang)
