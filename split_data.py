@@ -4,7 +4,11 @@ from random import sample, shuffle
 from tqdm import tqdm
 import random
 random.seed(42)
-en = Path('multilingual_3_parallel/ar_en.txt').read_text().strip().split('\n')
+langs = ['zh', 'tr']
+data_split = 'parallel3'
+parall_data_path = 'multilingual_3_parallel'
+en = Path(f'{parall_data_path}/ar_en.txt').read_text().strip().split('\n')
+
 shuffle(en)
 test = sample(en, 40000)
 dev = sample(en, 10000)
@@ -13,8 +17,7 @@ train = [x for x in en if x not in blocked]
 # langs = ['zh', 'tr', 'ar', 'de', 'fi', 'ko','fr','pl','ru' ]
 # data_split = 'parallel10'
 print('finish sampling english data')
-langs = ['zh', 'tr']
-data_split = 'parallel3'
+
 os.makedirs(data_split, exist_ok=True)
 en_train_path = f'{data_split}/EN/train/'
 en_dev_path = f'{data_split}/EN/dev/'
@@ -40,8 +43,8 @@ with open(f'{data_split}/EN/train/EN.txt', 'w') as en_t, open(f'{data_split}/EN/
 
 
 for lang in tqdm(langs):
-    pair_en = Path(f'multilingual_parallel/{lang}_en.txt').read_text().strip().split('\n')
-    pair_lang = Path(f'multilingual_parallel/{lang}.txt').read_text().strip().split('\n')
+    pair_en = Path(f'{parall_data_path}/{lang}_en.txt').read_text().strip().split('\n')
+    pair_lang = Path(f'{parall_data_path}/{lang}.txt').read_text().strip().split('\n')
     assert len(pair_en) == len(pair_lang)
     en_lang_pair ={x:y for x, y in zip(pair_en, pair_lang)}
     lang_name = lang.upper()
