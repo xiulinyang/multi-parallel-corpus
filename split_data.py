@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from random import sample, shuffle
 from tqdm import tqdm
-en = Path('multilingual_parallel/ar_en.txt').read_text().strip().split('\n')
+en = Path('multilingual_3_parallel/ar_en.txt').read_text().strip().split('\n')
 shuffle(en)
 test = sample(en, 40000)
 dev = sample(en, 10000)
