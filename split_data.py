@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from random import sample, shuffle
 from tqdm import tqdm
+import random
+random.seed(42)
 en = Path('multilingual_parallel/ar_en.txt').read_text().strip().split('\n')
 shuffle(en)
 test = sample(en, 40000)
@@ -9,7 +11,7 @@ dev = sample(en, 10000)
 train = [x for x in en if x not in set(test+dev)]
 # langs = ['zh', 'tr', 'ar', 'de', 'fi', 'ko','fr','pl','ru' ]
 # data_split = 'parallel10'
-
+print('finish sampling english data')
 langs = ['zh', 'tr']
 data_split = 'parallel3'
 os.makedirs(data_split, exist_ok=True)
