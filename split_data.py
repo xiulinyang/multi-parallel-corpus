@@ -16,6 +16,14 @@ print('finish sampling english data')
 langs = ['zh', 'tr']
 data_split = 'parallel3'
 os.makedirs(data_split, exist_ok=True)
+en_train_path = f'{data_split}/EN/train/'
+en_dev_path = f'{data_split}/EN/dev/'
+en_test_path = f'{data_split}/EN/test/'
+
+os.makedirs(en_train_path, exist_ok=True)
+os.makedirs(en_dev_path, exist_ok=True)
+os.makedirs(en_test_path, exist_ok=True)
+
 with open(f'{data_split}/EN/train/EN.txt', 'w') as en_t, open(f'{data_split}/EN/dev/EN.txt', 'w') as en_d, open(f'{data_split}/EN/test/EN.txt', 'w') as en_e:
     t_en ='\n'.join(train)
     d_en ='\n'.join(dev)
