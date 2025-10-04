@@ -59,7 +59,7 @@ with open(f'{data_split}/EN/train/EN.txt', 'w') as en_t, open(f'{data_split}/EN/
     train_100_len = sum(len(x.split()) for x in train100)
 
     print('EN')
-    print(train_len, dev_len, test_len, len(train_100_len))
+    print(train_len, dev_len, test_len, train_100_len)
 
 
 for lang in tqdm(langs):
