@@ -65,6 +65,7 @@ with open(f'{data_split}/EN/train/EN.txt', 'w') as en_t, open(f'{data_split}/EN/
 for lang in tqdm(langs):
     pair_en = Path(f'{parall_data_path}/{lang}_en.txt').read_text().strip().split('\n')
     pair_lang = Path(f'{parall_data_path}/{lang}.txt').read_text().strip().split('\n')
+    print(len(pair_en), len(pair_lang))
     assert len(pair_en) == len(pair_lang)
     en_lang_pair ={x:y for x, y in zip(pair_en, pair_lang)}
     lang_name = lang.upper()
