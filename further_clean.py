@@ -23,12 +23,12 @@ def clean_text(text):
     return re.sub(pattern, "", text)
 
 converter = opencc.OpenCC('t2s.json')
-# langs = ['zh', 'tr', 'ar', 'de', 'fi', 'ko','fr','pl','ru' ]
-langs = ['zh', 'ar']
+langs = ['zh', 'tr', 'ar', 'de', 'fi', 'ko','fr','pl','ru' ]
+# langs = ['zh', 'ar']
 for lang in tqdm(langs):
     t_lang = []
     en_lang = []
-    tgt_lang = pd.read_csv(f'cleaned_3/en_{lang}.tsv',encoding="utf-8", sep='\t').to_dict(orient='records')
+    tgt_lang = pd.read_csv(f'cleaned/en_{lang}.tsv',encoding="utf-8", sep='\t').to_dict(orient='records')
     with (open(f'multilingual_data/{lang}.txt', 'w',encoding="utf-8") as f,
           open(f'multilingual_data/{lang}_en.txt', 'w',encoding="utf-8") as e):
         for tgt_text in tgt_lang:
